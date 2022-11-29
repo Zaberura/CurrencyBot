@@ -5,9 +5,9 @@ import org.zaberura.models.UserRequest;
 
 public abstract class UserRequestHandler {
 
-    abstract boolean isApplicable(UserRequest request);
-    abstract void handle(UserRequest request);
-    abstract boolean isGlobal();
+    public abstract boolean isApplicable(UserRequest request);
+    public abstract void handle(UserRequest request);
+    public abstract boolean isGlobal();
 
 
     public boolean isCommand(Update update, String command) {

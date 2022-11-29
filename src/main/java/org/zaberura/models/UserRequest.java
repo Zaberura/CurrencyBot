@@ -8,6 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Builder
 public class UserRequest {
     private Update update;
-    private long chatID;
+    private long chatId;
     private UserSession userSession;
 }

@@ -1,0 +1,22 @@
+package org.zaberura.constants;
+
+public enum ConversationState {
+
+    CONVERSATION_STARTED,
+    MAIN_MENU,
+
+    //branch 1; get currency course
+    CURRENCY_INFO_REQUESTED,
+    INFO_CURRENCY1_ENTERED,
+    INFO_CURRENCY2_ENTERED,
+    INFO_TIME_SELECTION_ENTERED,
+    INFO_FINISHED,
+
+    //branch 2; currency calculator
+    CURRENCY_CALCULATOR_REQUESTED,
+    CALCULATOR_CURRENCY1_ENTERED,
+    CALCULATOR_CURRENCY2_ENTERED,
+    CALCULATOR_AMOUNT_ENTERED,
+    CALCULATOR_FINISHED,
+
+}
