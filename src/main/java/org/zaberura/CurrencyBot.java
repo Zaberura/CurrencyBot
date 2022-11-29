@@ -18,4 +18,6 @@ public class CurrencyBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         System.out.println("UPDATE RECEIVED");
     }
+
+
 }
