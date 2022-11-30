@@ -1,9 +1,11 @@
 package org.zaberura.handlers.impl;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.zaberura.handlers.UserRequestHandler;
 import org.zaberura.keyboard.KeyboardBuilder;
 import org.zaberura.models.UserRequest;
-import org.zaberura.services.TelegramService;
 
 import java.util.ArrayList;
 
@@ -17,23 +19,14 @@ public class StartCommandHandler extends UserRequestHandler {
         menuButtonsTexts.add("Button2"); //TO BE EDITED
     }
 
-    TelegramService telegramService;
-    KeyboardBuilder keyboardBuilder = new KeyboardBuilder();
-
-    //TO BE IMPLEMENTED
     @Override
-    public boolean isApplicable(UserRequest request) {
-        System.out.println(isCommand(request.getUpdate(), command));
-        return isCommand(request.getUpdate(), command);
-    }
-
-    @Override
-    public void handle(UserRequest request) {
-        telegramService.sendMessage(request.getChatId(), responseText, keyboardBuilder.build(menuButtonsTexts));
-    }
-
-    @Override
-    public boolean isGlobal() {
-        return true;
+    public SendMessage handle(Update update) {
+        SendMessage sendMessage = SendMessage
+                .builder()
+                .chatId(update.getMessage().getChatId().toString())
+                .text(responseText)
+                .replyMarkup(buildKeyboard())
+                .build();
+        return sendMessage;
     }
 }
