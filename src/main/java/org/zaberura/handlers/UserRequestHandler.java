@@ -11,14 +11,12 @@ import java.util.ArrayList;
 public abstract class UserRequestHandler {
 
     private String command;
-    private ArrayList<String> menuButtonsTexts;
+    private static ArrayList<String> menuButtonsTexts;
 
     public abstract SendMessage handle(Update update);
+    protected abstract ReplyKeyboard buildKeyboard();
 
-    public boolean isCommand(Update update) {
-        return update.hasMessage() && update.getMessage().isCommand()
-                && update.getMessage().getText().equals(command);
-    }
+    public abstract boolean isCommand(Update update);
 
     public boolean hasTextMessage(Update update){
         return update.hasMessage() && update.getMessage().hasText();
@@ -36,7 +34,4 @@ public abstract class UserRequestHandler {
         return true;
     }
 
-    protected ReplyKeyboard buildKeyboard(){
-        return new KeyboardBuilder().build(menuButtonsTexts);
-    }
 }
