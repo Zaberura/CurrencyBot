@@ -1,12 +1,10 @@
 package org.zaberura;
 
-import org.checkerframework.checker.units.qual.A;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.zaberura.handlers.UserRequestHandler;
-import org.zaberura.handlers.impl.StartCommandHandler;
+import org.zaberura.handlers.impl.custom.*;
 import org.zaberura.models.UserRequest;
-import org.zaberura.models.UserSession;
 import org.zaberura.services.UserSessionService;
 
 import java.util.ArrayList;
@@ -14,20 +12,23 @@ import java.util.ArrayList;
 public class Dispatcher {
 
     private ArrayList<UserRequestHandler> handlers;
-    //private UserSessionService userSessionService;
 
     public Dispatcher(){
         setHandlers();
     }
 
     public SendMessage dispatch(Update update){
-        if (update.hasMessage() && update.getMessage().hasText()){
-            String text = update.getMessage().getText();
-            for (UserRequestHandler handler : handlers){
-                if (handler.isCommand(update)){
+        UserRequest userRequest = UserRequest.builder()
+                .update(update)
+                .chatId(update.getMessage().getChatId())
+                .userSession(UserSessionService.getSession(update))
+                .build();
 
-                    return handler.handle(update);
-                }
+        //HANDLERS
+        for (UserRequestHandler handler : handlers){
+            if (handler.isApplicable(userRequest)){
+                UserSessionService.saveSession(userRequest);
+                return handler.handle(userRequest);
             }
         }
         return null;
@@ -35,6 +36,14 @@ public class Dispatcher {
 
     private void setHandlers(){
         handlers = new ArrayList<>();
-        handlers.add(new StartCommandHandler());
+
+        //handlers.add(new StartCommandHandler());
+        //handlers.add(new CurrencyInfoHandler());
+
+        handlers.add(new GayHandler());
+        handlers.add(new AlarmHandler());
+        handlers.add(new HelpMariiaHandler());
+        handlers.add(new MariiaRandomHandler());
+        handlers.add(new YuriiRandomHandler());
     }
 }

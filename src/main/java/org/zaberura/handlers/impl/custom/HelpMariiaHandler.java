@@ -1,4 +1,4 @@
-package org.zaberura.handlers.impl;
+package org.zaberura.handlers.impl.custom;
 
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,16 +11,19 @@ import org.zaberura.services.UserSessionService;
 
 import java.util.ArrayList;
 
-public class StartCommandHandler extends UserRequestHandler {
-
-    private String command = "/start";
-    private final String responseText = "Welcome to bot. \nChoose options from menu below"; //TO BE EDITED
+public class HelpMariiaHandler extends UserRequestHandler {
+    private String command =
+            "/i_need_help";
+    private String responseText = ""; //TO BE EDITED
     private ArrayList<String> menuButtonsTexts;
 
 
     @Override
     public SendMessage handle(UserRequest userRequest) {
         System.out.println("HANDLING STARTER...");
+
+        responseText = "@kiselboroda @m0tanka @moxito_s_rahitom @oleskuchyn" + "\n РЯТУУУУЙТЕ";
+
 
         userRequest.getUserSession().setState(ConversationState.MAIN_MENU);
         UserSessionService.saveSession(userRequest);
@@ -36,8 +39,8 @@ public class StartCommandHandler extends UserRequestHandler {
     @Override
     protected ReplyKeyboard buildKeyboard(){
         menuButtonsTexts = new ArrayList<>();
-        menuButtonsTexts.add("Currency Calculator"); //TO BE EDITED
-        menuButtonsTexts.add("Currency Info"); //TO BE EDITED
+        //menuButtonsTexts.add("Currency Calculator"); //TO BE EDITED
+        //menuButtonsTexts.add("Currency Info"); //TO BE EDITED
         return new KeyboardBuilder().build(menuButtonsTexts);
     }
 

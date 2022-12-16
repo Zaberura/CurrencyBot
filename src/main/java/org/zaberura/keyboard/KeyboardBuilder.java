@@ -1,7 +1,7 @@
 package org.zaberura.keyboard;
 
-import org.checkerframework.checker.units.qual.A;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -25,9 +25,19 @@ public class KeyboardBuilder {
 
         return ReplyKeyboardMarkup.builder()
                 .keyboard(buttonRows)
-                .selective(true)
+                .selective(false)
                 .resizeKeyboard(true)
+                .oneTimeKeyboard(true)
+                .build();
+    }
+
+    public ReplyKeyboardRemove hide (){
+        return ReplyKeyboardRemove.builder().removeKeyboard(true).selective(false).build();
+        /*return ReplyKeyboardMarkup.builder()
+                .clearKeyboard()
                 .oneTimeKeyboard(false)
                 .build();
+
+         */
     }
 }
