@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.zaberura.constants.Constants;
 import org.zaberura.handlers.UserRequestHandler;
+import org.zaberura.handlers.impl.currency.Currency1InputHandler;
+import org.zaberura.models.UserRequest;
 import org.zaberura.services.UserSessionService;
 
 import static java.awt.Color.RED;

@@ -1,4 +1,4 @@
-package org.zaberura.handlers.impl;
+package org.zaberura.handlers.impl.death;
 
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,18 +11,18 @@ import org.zaberura.services.UserSessionService;
 
 import java.util.ArrayList;
 
-public class StartCommandHandler extends UserRequestHandler {
+public class RequestInstructionsHandler extends UserRequestHandler {
 
-    private String command = "/start";
-    private final String responseText = "Welcome to bot. \nChoose options from menu below"; //TO BE EDITED
+    private String command = "Receive Info";
+    private final String responseText = "Please, enter your username: "; //TO BE EDITED
     private ArrayList<String> menuButtonsTexts;
 
 
     @Override
     public SendMessage handle(UserRequest userRequest) {
-        System.out.println("HANDLING STARTER...");
+        System.out.println("HANDLING RECEIVE INSTRUCTIONS...");
 
-        userRequest.getUserSession().setState(ConversationState.MAIN_MENU);
+        userRequest.getUserSession().setState(ConversationState.WAITING_FOR_USERNAME);
         UserSessionService.saveSession(userRequest);
         return SendMessage
                 .builder()
@@ -36,15 +36,17 @@ public class StartCommandHandler extends UserRequestHandler {
     @Override
     protected ReplyKeyboard buildKeyboard(){
         menuButtonsTexts = new ArrayList<>();
-        //menuButtonsTexts.add("Currency Calculator"); //TO BE EDITED
-        //menuButtonsTexts.add("Currency Info"); //TO BE EDITED
-        menuButtonsTexts.add("Somebody's gone"); //TO BE EDITED
+        menuButtonsTexts.add("admin");
         return new KeyboardBuilder().build(menuButtonsTexts);
     }
 
     @Override
     protected boolean isCommand(UserRequest userRequest){
-        return userRequest.getUpdate().hasMessage() && userRequest.getUpdate().getMessage().isCommand()
-                && userRequest.getUpdate().getMessage().getText().equals(command);
+        return userRequest.getUpdate().hasMessage() && userRequest.getUpdate().getMessage().getText().equals(command);
+    }
+
+    @Override
+    public boolean isApplicable(UserRequest userRequest) {
+        return isCommand(userRequest) && userRequest.getUserSession().getState().equals(ConversationState.DEATH_HAPPENED);
     }
 }

@@ -14,4 +14,5 @@ public class UserSession {
     private String currency2;
     private String timeFrame;
     private String amount;
+    private long requesterId;
 }

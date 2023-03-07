@@ -33,6 +33,16 @@ public class UserSessionService {
         return userSession;
     }
 
+    public static UserSession getById(Long Id) {
+        UserSession userSession = userSessionMap.getOrDefault(Id, UserSession
+                .builder()
+                .chatId(Id)
+                //.state(ConversationState.CONVERSATION_STARTED)
+                .build());
+        userSessionMap.putIfAbsent(Id, userSession);
+        return userSession;
+    }
+
     public static UserSession saveSession(UserRequest userRequest) {
         return userSessionMap.replace(userRequest.getUpdate().getMessage().getChatId(), userRequest.getUserSession());
     }

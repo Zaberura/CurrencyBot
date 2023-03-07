@@ -19,7 +19,7 @@ public class AlarmHandler extends UserRequestHandler {
 
     @Override
     public SendMessage handle(UserRequest userRequest) {
-        System.out.println("HANDLING STARTER...");
+
         System.out.println("User: " + userRequest.getUpdate());
         responseText = "@right_blinder @vidm0chka @zaberura @kiselboroda @m0tanka @moxito_s_rahitom @oleskuchyn";
 

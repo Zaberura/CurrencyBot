@@ -1,4 +1,4 @@
-package org.zaberura.handlers.impl;
+package org.zaberura.handlers.impl.death;
 
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,19 +11,33 @@ import org.zaberura.services.UserSessionService;
 
 import java.util.ArrayList;
 
-public class StartCommandHandler extends UserRequestHandler {
+public class UsernameHandler extends UserRequestHandler {
 
-    private String command = "/start";
-    private final String responseText = "Welcome to bot. \nChoose options from menu below"; //TO BE EDITED
+    private String command = "";
+    private String username = "admin";
+    private String responseText = ""; //TO BE EDITED
     private ArrayList<String> menuButtonsTexts;
 
 
     @Override
     public SendMessage handle(UserRequest userRequest) {
-        System.out.println("HANDLING STARTER...");
+        System.out.println("HANDLING USERNAME INPUT...");
 
-        userRequest.getUserSession().setState(ConversationState.MAIN_MENU);
-        UserSessionService.saveSession(userRequest);
+        if(userRequest.getUpdate().getMessage().getText().equals(username)){
+
+            userRequest.getUserSession().setState(ConversationState.WAITING_FOR_PASSWORD);
+            UserSessionService.saveSession(userRequest);
+
+            responseText = "Please enter password: ";
+
+        } else {
+            responseText = "Wrong username";
+
+            userRequest.getUserSession().setState(ConversationState.WAITING_FOR_USERNAME);
+            UserSessionService.saveSession(userRequest);
+
+        }
+
         return SendMessage
                 .builder()
                 .chatId(userRequest.getChatId())
@@ -36,15 +50,17 @@ public class StartCommandHandler extends UserRequestHandler {
     @Override
     protected ReplyKeyboard buildKeyboard(){
         menuButtonsTexts = new ArrayList<>();
-        //menuButtonsTexts.add("Currency Calculator"); //TO BE EDITED
-        //menuButtonsTexts.add("Currency Info"); //TO BE EDITED
-        menuButtonsTexts.add("Somebody's gone"); //TO BE EDITED
+        menuButtonsTexts.add("admin"); //TO BE EDITED
         return new KeyboardBuilder().build(menuButtonsTexts);
     }
 
     @Override
     protected boolean isCommand(UserRequest userRequest){
-        return userRequest.getUpdate().hasMessage() && userRequest.getUpdate().getMessage().isCommand()
-                && userRequest.getUpdate().getMessage().getText().equals(command);
+
+        return userRequest.getUpdate().hasMessage() //&& userRequest.getUpdate().getMessage().isCommand()
+                 && userRequest.getUserSession().getState().equals(ConversationState.WAITING_FOR_USERNAME)
+        ;
+
+
     }
 }
